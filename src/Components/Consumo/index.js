@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import axios from "axios"
+import TablePagination from '@material-ui/core/TablePagination';
 import styles from "./Consumo.module.css"
+
 
 
 export default class Consumo extends Component {
@@ -16,26 +18,25 @@ export default class Consumo extends Component {
             const categories = res.data;
             this.setState({ categories });
           })
-      }
-
-      getProducts(){
-        axios.get(`/services/api/v1/market/products/`)
-        .then(res2 => {
-          const products = res2.data;
+        axios.get(`/services/api/v1/market/products/?page=691`)
+        .then(res => {
+          const products = res.data.results;
           this.setState({ products });
         })
       }
 
     render() {
         return (
-            <div>
-                <ul>
-                    { this.state.categories.map(category => <li>{category.name}</li>)}
-                </ul>
+            <div className={styles.List}>
+                <div className={styles.categories}>
+                    { this.state.categories.map(category => <React.Fragment><label>{category.name}</label><label>{category.slug}</label></React.Fragment>)}
+                </div>
 
-                <ul>
-                    { this.state.products.map(product => <li>{product.photo}</li>)}
-                </ul>
+                <div className={styles.categories}>
+                    { this.state.products.map(product => <label>{product.name}</label>)}
+                </div>
+                <TablePagination
+                />
         </div>
         )
     }
